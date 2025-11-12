@@ -1,0 +1,16 @@
+BJ128_TA
+DH156_TA
+HM124_TA
+LJ168_TA
+MA113_TA
+SM127_TA
+SS130_TA
+sujet13_TA_faible
+sujet13_TA_fort
+sujet13_TA_pad
+sujet15_TA_faible
+sujet15_TA_fort
+sujet15_TA_pad
+sujet1_TA_faible
+sujet1_TA_fort
+sujet1_TA_pad

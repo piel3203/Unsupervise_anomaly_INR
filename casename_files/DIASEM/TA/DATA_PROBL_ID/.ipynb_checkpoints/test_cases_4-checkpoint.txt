@@ -1,0 +1,16 @@
+sujet1_TA_pad
+sujet1_TA_fort
+sujet1_TA_faible
+sujet13_TA_faible
+sujet13_TA_fort
+sujet13_TA_pad
+sujet15_TA_faible
+sujet15_TA_fort
+sujet15_TA_pad
+PJ165
+LJ139
+MA113
+GG131
+DB145
+EP105
+CG147

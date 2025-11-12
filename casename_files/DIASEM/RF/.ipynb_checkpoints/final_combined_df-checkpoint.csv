@@ -1,0 +1,129 @@
+ID,Volume,Group
+AL135_RF,97.39758772209473,Sarcopenia Dataset
+AM112_RF,128.53155796125532,Sarcopenia Dataset
+BA137_RF,83.490004781208,Sarcopenia Dataset
+BM103_RF,50.8299584500799,Sarcopenia Dataset
+CY164_RF,118.21991959713307,Sarcopenia Dataset
+DI154_RF,102.68229770965874,Sarcopenia Dataset
+DP172_RF,70.96268923619762,Sarcopenia Dataset
+DR160_RF,162.58716426150687,Sarcopenia Dataset
+EM151_RF,94.36210356975859,Sarcopenia Dataset
+EP105_RF,117.8434315613946,Sarcopenia Dataset
+FO117_RF,58.54197593215015,Sarcopenia Dataset
+GD171_RF,90.32450814341428,Sarcopenia Dataset
+LA134_RF,65.69997023662926,Sarcopenia Dataset
+LA162_RF,68.37989768335736,Sarcopenia Dataset
+LJ139_RF,69.91463201548252,Sarcopenia Dataset
+LP133_RF,82.1444466726361,Sarcopenia Dataset
+MA119_RF,88.75254320832435,Sarcopenia Dataset
+MM170_RF,96.9025276123709,Sarcopenia Dataset
+PG161_RF,79.12061176059582,Sarcopenia Dataset
+PP104_RF,91.57404569274932,Sarcopenia Dataset
+QP108_RF,78.08001478681621,Sarcopenia Dataset
+RA150_RF,102.00809817179106,Sarcopenia Dataset
+RJ136_RF,72.45492200284917,Sarcopenia Dataset
+SC146_RF,113.3173131317487,Sarcopenia Dataset
+AL135_RF,97.39758772209473,Patients without sarcopenia
+AM112_RF,128.53155796125532,Patients without sarcopenia
+BA122_RF,103.02201010789443,Patients without sarcopenia
+BA137_RF,83.490004781208,Patients without sarcopenia
+BC167_RF,103.82952421785565,Patients without sarcopenia
+BH116_RF,79.3991206955365,Patients without sarcopenia
+BJ128_RF,113.43606457016058,Patients without sarcopenia
+BM103_RF,50.8299584500799,Patients without sarcopenia
+BP149_RF,144.57387987449766,Patients without sarcopenia
+CG115_RF,103.40257304482535,Patients without sarcopenia
+CG147_RF,83.98519889195775,Patients without sarcopenia
+CR159_RF,130.45712985608355,Patients without sarcopenia
+CS102_RF,93.23047298061569,Patients without sarcopenia
+CY164_RF,118.21991959713307,Patients without sarcopenia
+DB145_RF,153.60005286019714,Patients without sarcopenia
+DH156_RF,125.584985290654,Patients without sarcopenia
+DI154_RF,102.68229770965874,Patients without sarcopenia
+DJ101_RF,91.87280872804345,Patients without sarcopenia
+DO125_RF,74.55450922181365,Patients without sarcopenia
+DP172_RF,70.96268923619762,Patients without sarcopenia
+DR160_RF,162.58716426150687,Patients without sarcopenia
+EM151_RF,94.36210356975859,Patients without sarcopenia
+EP105_RF,117.8434315613946,Patients without sarcopenia
+FD121_RF,107.26270762519539,Patients without sarcopenia
+FM144_RF,115.53216892430932,Patients without sarcopenia
+FO117_RF,58.54197593215015,Patients without sarcopenia
+GD123_RF,78.62353490549465,Patients without sarcopenia
+GD171_RF,90.32450814341428,Patients without sarcopenia
+GG131_RF,126.42590986313485,Patients without sarcopenia
+GG140_RF,72.89022445596987,Patients without sarcopenia
+HM124_RF,84.57964102879912,Patients without sarcopenia
+IJ157_RF,86.11057958978694,Patients without sarcopenia
+JJ142_RF,71.45277378562605,Patients without sarcopenia
+LA134_RF,65.69997023662926,Patients without sarcopenia
+LA162_RF,68.37989768335736,Patients without sarcopenia
+LE120_RF,147.0869778339565,Patients without sarcopenia
+LJ139_RF,69.91463201548252,Patients without sarcopenia
+LJ168_RF,145.23680575611257,Patients without sarcopenia
+LP133_RF,82.1444466726361,Patients without sarcopenia
+MA113_RF,83.71907358062965,Patients without sarcopenia
+MA119_RF,88.75254320832435,Patients without sarcopenia
+MM170_RF,96.9025276123709,Patients without sarcopenia
+PG161_RF,79.12061176059582,Patients without sarcopenia
+PJ165_RF,73.18656435164996,Patients without sarcopenia
+PL158_RF,118.13968762247637,Patients without sarcopenia
+PP104_RF,91.57404569274932,Patients without sarcopenia
+QP108_RF,78.08001478681621,Patients without sarcopenia
+RA126_RF,73.41421421626117,Patients without sarcopenia
+RA150_RF,102.00809817179106,Patients without sarcopenia
+RD132_RF,139.66052936471533,Patients without sarcopenia
+RF148_RF,66.28871180418321,Patients without sarcopenia
+RJ136_RF,72.45492200284917,Patients without sarcopenia
+RY166_RF,95.95139874144272,Patients without sarcopenia
+SC146_RF,113.3173131317487,Patients without sarcopenia
+SM127_RF,92.49713694928586,Patients without sarcopenia
+SS130_RF,89.77774159733299,Patients without sarcopenia
+TC152_RF,98.91698389776052,Patients without sarcopenia
+TT129_RF,98.44049669399672,Patients without sarcopenia
+ZS153_RF,90.32415618082136,Patients without sarcopenia
+sujet10_RF_faible,236.53422445322573,Healthy subjects
+sujet10_RF_fort,236.12523178940174,Healthy subjects
+sujet10_RF_pad,229.4901344605931,Healthy subjects
+sujet11_RF_faible,175.15853555193172,Healthy subjects
+sujet11_RF_fort,176.85173235431685,Healthy subjects
+sujet11_RF_pad,183.42573071172228,Healthy subjects
+sujet12_RF_faible,179.41128273246252,Healthy subjects
+sujet12_RF_fort,173.959298632795,Healthy subjects
+sujet12_RF_pad,183.00768710754346,Healthy subjects
+sujet13_RF_faible,176.29593145889555,Healthy subjects
+sujet13_RF_fort,160.63075074801966,Healthy subjects
+sujet13_RF_pad,175.79699770015526,Healthy subjects
+sujet14_RF_faible,322.71390901706366,Healthy subjects
+sujet14_RF_fort,305.94867532355386,Healthy subjects
+sujet14_RF_pad,327.4320647245329,Healthy subjects
+sujet15_RF_faible,193.41784823482158,Healthy subjects
+sujet15_RF_fort,175.40251603715123,Healthy subjects
+sujet15_RF_pad,200.02589828459733,Healthy subjects
+sujet1_RF_faible,184.98371127696103,Healthy subjects
+sujet1_RF_fort,147.8748594121551,Healthy subjects
+sujet1_RF_pad,211.88322928957177,Healthy subjects
+sujet2_RF_faible,178.97904676731258,Healthy subjects
+sujet2_RF_fort,173.08884077816037,Healthy subjects
+sujet2_RF_pad,177.65071873865557,Healthy subjects
+sujet3_RF_faible,169.20968768738302,Healthy subjects
+sujet3_RF_fort,155.0431845926149,Healthy subjects
+sujet3_RF_pad,165.6972324776547,Healthy subjects
+sujet4_RF_faible,253.47797179996596,Healthy subjects
+sujet4_RF_fort,231.78926087780576,Healthy subjects
+sujet4_RF_pad,260.95828301444186,Healthy subjects
+sujet5_RF_faible,185.6630779312458,Healthy subjects
+sujet5_RF_fort,165.0289836077718,Healthy subjects
+sujet5_RF_pad,204.0446736475583,Healthy subjects
+sujet6_RF_faible,200.72489318921836,Healthy subjects
+sujet6_RF_fort,188.62945437175642,Healthy subjects
+sujet6_RF_pad,200.13795891049134,Healthy subjects
+sujet7_RF_faible,158.3555416161907,Healthy subjects
+sujet7_RF_fort,149.9409401082797,Healthy subjects
+sujet7_RF_pad,158.18686833661656,Healthy subjects
+sujet8_RF_faible,138.71186179234925,Healthy subjects
+sujet8_RF_fort,140.9810972577585,Healthy subjects
+sujet8_RF_pad,140.5871469703624,Healthy subjects
+sujet9_RF_faible,218.82030887086876,Healthy subjects
+sujet9_RF_fort,223.06187133990974,Healthy subjects
+sujet9_RF_pad,214.6844727046974,Healthy subjects

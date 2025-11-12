@@ -1,0 +1,16 @@
+BA122_TA
+BP149_TA
+CS102_TA
+DB145_TA
+DO125_TA
+GG131_TA
+TT129_TA
+sujet10_TA_faible
+sujet10_TA_fort
+sujet10_TA_pad
+sujet11_TA_faible
+sujet11_TA_fort
+sujet11_TA_pad
+sujet8_TA_faible
+sujet8_TA_fort
+sujet8_TA_pad

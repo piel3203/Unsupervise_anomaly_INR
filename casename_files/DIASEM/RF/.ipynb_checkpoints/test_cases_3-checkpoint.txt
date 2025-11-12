@@ -1,0 +1,16 @@
+BC167_RF
+BH116_RF
+CG115_RF
+DJ101_RF
+GG140_RF
+RD132_RF
+TC152_RF
+sujet5_RF_faible
+sujet5_RF_fort
+sujet5_RF_pad
+sujet6_RF_faible
+sujet6_RF_fort
+sujet6_RF_pad
+sujet7_RF_faible
+sujet7_RF_fort
+sujet7_RF_pad

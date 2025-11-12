@@ -1,0 +1,16 @@
+BA122_RF
+BP149_RF
+CS102_RF
+DB145_RF
+DO125_RF
+GG131_RF
+TT129_RF
+sujet10_RF_faible
+sujet10_RF_fort
+sujet10_RF_pad
+sujet11_RF_faible
+sujet11_RF_fort
+sujet11_RF_pad
+sujet8_RF_faible
+sujet8_RF_fort
+sujet8_RF_pad

@@ -1,0 +1,16 @@
+BC167_TA
+BH116_TA
+CG115_TA
+DJ101_TA
+GG140_TA
+RD132_TA
+TC152_TA
+sujet5_TA_faible
+sujet5_TA_fort
+sujet5_TA_pad
+sujet6_TA_faible
+sujet6_TA_fort
+sujet6_TA_pad
+sujet7_TA_faible
+sujet7_TA_fort
+sujet7_TA_pad
