@@ -1,119 +1,18 @@
 import time
 from pathlib import Path
 from typing import List
-
-from pytorch3d.transforms import euler_angles_to_matrix
 import numpy as np
 import torch
 import sys
-
 import train
 from impl_recon.models import implicits
 from impl_recon.utils import config_io, data_generation, impl_utils, io_utils, patch_utils
-
 import pandas as pd
 import json
 import re
 import math
 import os
 import torch.nn.functional as F
-
-def export_predictions_to_json(casenames, labels_pred_cpu, labels_gt_cpu, json_path_name):
-    # Load existing data if the file exists
-    if json_path_name.exists():
-        try:
-            with open(json_path_name, 'r') as f:
-                data = json.load(f)
-        except json.JSONDecodeError as e:
-            print(f"[ERROR] Failed to decode JSON file '{json_path_name}' at line {e.lineno}, column {e.colno}: {e.msg}")
-            print(f"[INFO] You may want to fix or delete the corrupted file.")
-            return  # or raise, or skip loading to overwrite
-    else:
-        data = {}
-
-    # Add new entries for each case in the batch
-    for idx, casename in enumerate(casenames):
-        data[casename] = {
-            "labels_pred_cpu": labels_pred_cpu[idx].tolist(),
-            "labels_gt_cpu": labels_gt_cpu[idx].tolist()
-        }
-
-    # Write updated data back to the JSON file
-    with open(json_path_name, 'w') as f:
-        json.dump(data, f, indent=4)
-'''
-def export_predictions_to_json(casenames, labels_pred_cpu, labels_gt_cpu, json_path_name):
-    # Load existing data if the file exists
-    if json_path_name.exists():
-        with open(json_path_name, 'r') as f:
-            data = json.load(f)
-    else:
-        data = {}
-
-    # Add new entries for each case in the batch
-    for idx, casename in enumerate(casenames):
-        data[casename] = {
-            "labels_pred_cpu": labels_pred_cpu[idx].tolist(),
-            "labels_gt_cpu": labels_gt_cpu[idx].tolist()
-        }
-
-    # Write updated data back to the JSON file
-    with open(json_path_name, 'w') as f:
-        json.dump(data, f, indent=4)
-   
-
-def export_predictions_to_json(batch_index, case_ids, labels_pred, labels_gt, json_path_name):
-    # Ensure case IDs are strings
-    case_ids_str = [str(case_id) for case_id in case_ids]
-
-    # Convert tensors to lists for JSON compatibility
-    labels_pred_list = labels_pred.tolist()
-    labels_gt_list = labels_gt.tolist()
-
-    # Data structure for JSON
-    data = {case_id: {'label_pred': pred, 'label_gt': gt}
-            for case_id, pred, gt in zip(case_ids_str, labels_pred_list, labels_gt_list)}
-
-    # Append to existing JSON file if it exists
-    try:
-        with open(json_path_name, 'r') as file:
-            existing_data = json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
-        existing_data = {}
-
-    existing_data.update(data)
-
-    # Save data
-    with open(json_path_name, 'w') as file:
-        json.dump(existing_data, file, indent=4)
-
-'''
-
-def parse_and_split(folder_path, train_file='train_healthy_cases.txt', test_file='test_cases.txt', test_ratio=0.1):
-    # Get unique subject names from filenames
-    subjects = {}
-    for file in os.listdir(folder_path):
-        if file.endswith('.nii.gz'):
-            subject_name = file.rsplit('_', 1)[0]  # Get subject name without .nii.gz and last part
-            if subject_name not in subjects:
-                subjects[subject_name] = []
-            subjects[subject_name].append(file.rsplit('.nii.gz', 1)[0])  # Append name without extension
-
-    # Convert subject names into a list and shuffle to randomize
-    subject_list = list(subjects.keys())
-    random.shuffle(subject_list)
-
-    # Determine split index based on the test ratio
-    split_index = max(1, int(len(subject_list) * test_ratio))
-    test_subjects = subject_list[:split_index]
-    train_subjects = subject_list[split_index:]
-
-    # Write to text files, ensuring each subject's files stay together
-    with open(train_file, 'w') as train_f, open(test_file, 'w') as test_f:
-        for subject in train_subjects:
-            train_f.write('\n'.join(subjects[subject]) + '\n')
-        for subject in test_subjects:
-            test_f.write('\n'.join(subjects[subject]) + '\n')
 
 
 def export_batch(batch: dict, labels_pred: np.ndarray, spacings: np.ndarray,
@@ -206,16 +105,8 @@ def main():
     target_dirname = params['model_name']
     sample_orthogonal_slices = params['sample_orthogonal_slices']
     biggest_size = params['biggest_size']
-    selected_params=params['selected_params']
-    missing_value=params['missing_value']
-    which_selec_param=params['which_selec_param']
-    opt_vect=params['opt_vect']
-    opt_rot = params['opt_rot']
-    angle_dir= params['angle_dir']
     print(biggest_size)
-    print(type(biggest_size))
-    
-    
+  
     if not evaluate_predictions and not export_predictions:
         raise ValueError('Neither evaluation nor export were requested.')
 
@@ -223,7 +114,6 @@ def main():
     params['batch_size_val'] = 1
     latent_lr = 1e-2
     if task_type == config_io.TaskType.AD:
-        df_selected=train.load_df_json(selected_params)
         if sample_orthogonal_slices:
             target_dirname += f'_{latent_num_iters}_eval_ortho'
         else:
@@ -309,20 +199,7 @@ def main():
             raise ValueError(f'Max image size is larger than current model\'s: '
                              f'{image_size_curr} > {image_size_train} with epsilon {eps}.')
         num_examples = len(ds_loader.dataset)
-        if opt_rot == True:
-            rot_ang = torch.nn.Embedding(num_examples, 3).cuda()
-            torch.nn.init.normal_(
-                rot_ang.weight.data,
-                0.0,
-                (math.pi**2)/64,
-            )
-        else:
-            rot_ang = torch.nn.Embedding(num_examples, 3).cuda()
-            torch.nn.init.constant_(
-                rot_ang.weight.data,
-                0.0
-            )
-            
+
     all_dice_metrics: List[float] = []
     asds: List[float] = []
     hd95s: List[float] = []
@@ -358,108 +235,26 @@ def main():
             latents_batch = torch.nn.Parameter(
                 torch.normal(0.0, 1e-4, [labels_gt_sparse.shape[0], latent_dim], device=device),
                 requires_grad=True)
-            
-            
-            
-            #ADDED TO HANDLE CLINICAL INFOS
-            if opt_vect==True:
-                
-                df_filtered = df_selected[df_selected["ID_subject"].isin(batch['casenames'])]
-                vector_list = df_filtered.values.tolist()
-                vector_trimmed = torch.tensor(vector_list[0][1:], dtype=torch.float32).unsqueeze(0)
-                #print("vector_trimmed",vector_trimmed)
 
-
-                if missing_value==True:
-                    vector_trimmed[0, which_selec_param] = -1
-                    #print('NEW vector_trimmed', vector_trimmed)
-
-                latent_and_infos =  torch.cat((vector_trimmed.cuda(), latents_batch.cuda()), dim=1) 
-            else:
-                latent_and_infos=latents_batch
-            #print("LATENTS_BATCH_AND_INFOS",latent_and_infos)
             coords = batch['coords'].to(device)
-            batch_caseids=batch['caseids']
-            '''
-            original_shape = coords.shape
-           
-            coords_flattened = coords.view(1, -1, 3)  # shape: [1, 71*64*205, 3]
-            
-            if opt_rot:
-                # Rotate coordinates using the sequence IDs and rotation angles
-                #print("ROTATION MATRIX SHAPE",np.shape(euler_angles_to_matrix(rot_ang(batch['caseids'].cuda()), 'XYZ')))
-                coords_flattened = coords_flattened.float()
 
-                # Retrieve the rotation matrix for the given case ID
-                rot_ang_tensor = rot_ang(batch['caseids'].long().cuda())
-                train.save_rotation_angles(batch['caseids'], rot_ang_tensor, phase='train')
-                xyz_rot = coords_flattened @ euler_angles_to_matrix(rot_ang_tensor, 'XYZ')  # shape: [1, 71*64*205, 3]
-                xyz_rot = xyz_rot.view(original_shape)
-                #print("xyz_rot SHAPE", xyz_rot.shape)
-            else:
-                # If no rotation, keep the original coordinates
-                xyz_rot = coords
-            '''
-            if opt_rot == True:
-                learning_rate_rot=params['learning_rate_rot']
-                rot_matrix_optim=train.optimize_latents(
-                    net, latent_and_infos, labels_gt_sparse, coords, latent_lr, lat_reg_lambda,
-                    latent_num_iters, device, max_num_const_train_dsc, True, rot_ang, opt_rot, batch_caseids, learning_rate_rot)
-            else :
-                train.optimize_latents(
-                    net, latent_and_infos, labels_gt_sparse, coords, latent_lr, lat_reg_lambda,
-                    latent_num_iters, device, max_num_const_train_dsc, True, rot_ang, opt_rot, batch_caseids)
+
+            train.optimize_latents(
+                net, latents_batch, labels_gt_sparse, coords, latent_lr, lat_reg_lambda,
+                latent_num_iters, device, max_num_const_train_dsc, True)
+            
                 
-                
-            print(f'L2^2(z): {torch.mean(torch.sum(torch.square(latent_and_infos), dim=1)):.4f}')
-            print('z:',latent_and_infos)
+            print(f'L2^2(z): {torch.mean(torch.sum(torch.square(latents_batch), dim=1)):.2f}')
+            print('z:',latents_batch)
             # Full resolution prediction
-            #latent_and_infos =  torch.cat((vector_trimmed.cuda(), latents_batch.cuda()), dim=1) 
+            #latents_batch =  torch.cat((vector_trimmed.cuda(), latents_batch.cuda()), dim=1) 
             # Assume labels_gt shape is [B, D, H, W]
-            current_shape = torch.tensor(labels_gt.shape[1:])  # [D, H, W]
-            target_spatial_shape = current_shape
-            print (target_spatial_shape)
-            
-            if opt_rot:
-                # Option 1: Add a margin (padding)
-                #margin = 50  # adjust this number as needed
-                #target_spatial_shape = target_spatial_shape + margin
-
-                # Option 2 (alternative): Scale up the shape by a factor
-                scale_factor = 1.5
-                target_spatial_shape = (target_spatial_shape.float() * scale_factor).ceil().to(torch.int)
-            diff = target_spatial_shape - current_shape  # amount to pad
-            print(target_spatial_shape)
-            
-            '''
-            if opt_rot == True:
-                labels_pred = impl_utils.sample_latents_rot(rot_matrix_optim, latent_and_infos, net,
-                                                        target_spatial_shape, spacings)
-            else: 
-                labels_pred = impl_utils.sample_latents( latent_and_infos, net,
+            target_spatial_shape = torch.tensor(labels_gt.shape[1:])  # [D, H, W]  
+            labels_pred = impl_utils.sample_latents(latents_batch, net,
                                                     target_spatial_shape, spacings)
-            '''
-                
-            labels_pred = impl_utils.sample_latents( latent_and_infos, net,
-                                                    target_spatial_shape, spacings)
-            
-            if opt_rot == True:
-                pad = [
-                    diff[2] // 2, diff[2] - diff[2] // 2,  # W
-                    diff[1] // 2, diff[1] - diff[1] // 2,  # H
-                    diff[0] // 2, diff[0] - diff[0] // 2   # D
-                ]
-
-                labels_gt_padded = F.pad(labels_gt, pad, mode='constant', value=0)
-                print ("labels_gt_padded",labels_gt_padded)
-                labels_gt = labels_gt_padded.unsqueeze(1)
-            else:
-                labels_gt = labels_gt.unsqueeze(1)
-            
-            
             # Add channels for consistency with ReconNet
             labels_pred = labels_pred.unsqueeze(1)
-            #labels_gt = labels_gt.unsqueeze(1)
+            labels_gt = labels_gt.unsqueeze(1)
         elif task_type == config_io.TaskType.RN:
             labels_lr = batch['labels_lr'].to(device)
             with torch.no_grad():
@@ -482,42 +277,31 @@ def main():
         spacings_cpu = spacings.numpy()
         json_path_name= target_dir /'predictions.json'
         print(json_path_name)
-        
-        #if opt_rot==True:
-        #    export_predictions_to_json(batch['casenames'], labels_pred_cpu, labels_gt_cpu, json_path_name)
-        
-        #export_predictions_to_json(batch['casenames'], labels_pred_cpu, labels_gt_cpu, json_path_name)
 
         if evaluate_predictions:
             impl_utils.eval_batch(labels_pred_cpu, labels_gt_cpu, spacings_cpu, all_dice_metrics,
-                                  asds, hd95s, max_distances,err_vol_cm_3_list, err_vol_percent_list, eccentricity_pred_list, 
-                                  eccentricity_gt_list, major_axis_pred_list, major_axis_gt_list, minor_axis_pred_list, 
-                                  minor_axis_gt_list,curvature_pred_list, curvature_gt_list, True)
+                                  asds, hd95s, max_distances,err_vol_cm_3_list, err_vol_percent_list, True)
 
         
         if export_predictions:
             export_batch(batch, labels_pred_cpu, spacings_cpu, task_type, target_dir)
-            '''
-            target_dir_rot=target_dir /"rot"
-            export_batch(batch, labels_pred_cpu_w_rot, spacings_cpu, task_type, target_dir_rot)
-            '''
 
     print('\n')
-    print('latent_and_infos :', latents_batch)
+    print('latents_batch :', latents_batch)
 
     if all_dice_metrics and asds and hd95s and max_distances:
-        print(f'ASD: {np.mean(asds):.4f} +- {np.std(asds):.4f} in '
-              f'[{np.min(asds):.4f}, {np.max(asds):.4f}]')
-        print(f'HSD95: {np.mean(hd95s):.4f} +- {np.std(hd95s):.4f} in '
-              f'[{np.min(hd95s):.4f}, {np.max(hd95s):.4f}]')
-        print(f'HSD: {np.mean(max_distances):.4f} +- {np.std(max_distances):.4f} in '
-              f'[{np.min(max_distances):.4f}, {np.max(max_distances):.4f}]')
-        print(f'DSC: {np.mean(all_dice_metrics):.4f} +- {np.std(all_dice_metrics):.4f} in '
-              f'[{np.min(all_dice_metrics):.4f}, {np.max(all_dice_metrics):.4f}]')
-        print(f'err_vol_cm_3: {np.mean(err_vol_cm_3_list):.4f} +- {np.std(err_vol_cm_3_list):.4f} in '
-              f'[{np.min(err_vol_cm_3_list):.4f}, {np.max(err_vol_cm_3_list):.4f}]')
-        print(f'err_vol_cm_3: {np.mean(err_vol_percent_list):.4f} +- {np.std(err_vol_percent_list):.4f} in '
-              f'[{np.min(err_vol_percent_list):.4f}, {np.max(err_vol_percent_list):.4f}]')
+        print(f'ASD: {np.mean(asds):.2f} +- {np.std(asds):.2f} in '
+              f'[{np.min(asds):.2f}, {np.max(asds):.2f}]')
+        print(f'HSD95: {np.mean(hd95s):.2f} +- {np.std(hd95s):.2f} in '
+              f'[{np.min(hd95s):.2f}, {np.max(hd95s):.2f}]')
+        print(f'HSD: {np.mean(max_distances):.2f} +- {np.std(max_distances):.2f} in '
+              f'[{np.min(max_distances):.2f}, {np.max(max_distances):.2f}]')
+        print(f'DSC: {np.mean(all_dice_metrics):.2f} +- {np.std(all_dice_metrics):.2f} in '
+              f'[{np.min(all_dice_metrics):.2f}, {np.max(all_dice_metrics):.2f}]')
+        print(f'err_vol_cm_3: {np.mean(err_vol_cm_3_list):.2f} +- {np.std(err_vol_cm_3_list):.2f} in '
+              f'[{np.min(err_vol_cm_3_list):.2f}, {np.max(err_vol_cm_3_list):.2f}]')
+        print(f'err_vol_cm_3: {np.mean(err_vol_percent_list):.2f} +- {np.std(err_vol_percent_list):.2f} in '
+              f'[{np.min(err_vol_percent_list):.2f}, {np.max(err_vol_percent_list):.2f}]')
 
 
 

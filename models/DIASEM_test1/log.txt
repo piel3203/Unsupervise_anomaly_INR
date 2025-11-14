@@ -1,0 +1,23 @@
+Loading training data into memory...
+BA122_RF
+Initial spacing: [0.16 0.16 0.16]
+New spacing: [1.59999996 1.59999996 1.59999996]
+RESAMPLED VOL SHAPE: (69, 68, 202)
+BC167_RF
+Initial spacing: [0.16 0.16 0.16]
+New spacing: [1.59999996 1.59999996 1.59999996]
+RESAMPLED VOL SHAPE: (67, 65, 211)
+sujet10_RF_faible
+Initial spacing: [0.15000001 0.15000001 0.15000001]
+New spacing: [1.50000006 1.50000006 1.50000006]
+RESAMPLED VOL SHAPE: (68, 66, 225)
+sujet10_RF_fort
+Initial spacing: [0.15000001 0.15000001 0.15000001]
+New spacing: [1.50000006 1.50000006 1.50000006]
+RESAMPLED VOL SHAPE: (71, 66, 223)
+sujet10_RF_pad
+Initial spacing: [0.16 0.16 0.16]
+New spacing: [1.59999996 1.59999996 1.59999996]
+RESAMPLED VOL SHAPE: (73, 60, 207)
+SPACINGS: [tensor([1.5996, 1.5996, 1.5996], dtype=torch.float16), tensor([1.5996, 1.5996, 1.5996], dtype=torch.float16), tensor([1.5000, 1.5000, 1.5000], dtype=torch.float16), tensor([1.5000, 1.5000, 1.5000], dtype=torch.float16), tensor([1.5996, 1.5996, 1.5996], dtype=torch.float16)]
+Volume size: tensor([116.7500, 108.7500, 337.5000], dtype=torch.float16).

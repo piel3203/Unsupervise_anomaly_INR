@@ -69,34 +69,6 @@ def pad(label: torch.Tensor, target_shape: torch.Tensor) -> torch.Tensor:
     label = functional.pad(label, padding)
     return label
 
-'''
-def load_volumes(volumes_dir: Path, casenames: List[str]) -> Tuple[List[torch.Tensor],
-                                                                   List[torch.Tensor]]:
-    """Load axis-aligned volumes."""
-    volumes: list[np.ndarray] = []
-    spacings: list[np.ndarray] = []
-    for casename in casenames:
-        curr_pattern = f'{casename}*.nii*'
-        files = list(volumes_dir.glob(curr_pattern))
-        if len(files) != 1:
-            raise ValueError(f'Exactly one file must fit the pattern:\n'
-                             f'{volumes_dir / curr_pattern}')
-        volume, affine = io_utils.load_nifti_file(files[0])
-        # Currently only transformation matrices with scaling & translation are supported
-        if not geometry_utils.is_matrix_scaling_and_transform(affine):
-            raise ValueError('Local to global image matrix is supposed to be 4x4, have scaling '
-                             'and translation components only, and positive scaling. Instead got\n'
-                             f'{affine}')
-        spacing = np.diagonal(affine)[:3].copy()
-        volumes.append(volume)
-        spacings.append(spacing)
-
-    # Convert everything to float32 and/or tensors
-    volumes_tnsr = [torch.from_numpy(x).to(torch.float32) for x in volumes]
-    spacings_tnsr = [torch.from_numpy(x).to(torch.float32) for x in spacings]
-    return volumes_tnsr, spacings_tnsr
-'''
-
 
 def load_volumes(volumes_dir: Path, casenames: List[str], spacing_scale: float = 1.0) -> Tuple[List[torch.Tensor], List[torch.Tensor]]:
     """Load axis-aligned volumes and scale their spacings."""
@@ -230,34 +202,6 @@ def split_train_val_casenames(casenames: List[str], val_fraction: float,
         return [casenames[idx] for idx in train_caseids]
     return [casenames[idx] for idx in val_caseids]
 
-'''
-def generate_mid_slice_ids(label: torch.Tensor) -> torch.Tensor:
-    """Generate [N, 3] voxels IDs from three orthogonal, center slices."""
-    # Find center of foreground gravity
-    individual_voxel_ids = [torch.arange(num_elements) for num_elements in label.shape]
-    individual_voxel_ids_meshed = torch.meshgrid(individual_voxel_ids, indexing='ij')
-    voxel_ids = torch.stack(individual_voxel_ids_meshed, -1)
-    fg_positions = voxel_ids * label.unsqueeze(-1)
-    fg_positions = fg_positions.reshape(-1, 3)
-    center = torch.sum(fg_positions, dim=0) / torch.sum(label)
-    center = torch.round(center).to(torch.int64)
-
-    shape = label.shape
-    voxel_ids_per_slice = []
-    for i in range(3):
-        axis1 = (i + 1) % 3
-        axis2 = (i + 2) % 3
-        individual_voxel_ids = [torch.arange(shape[axis1]), torch.arange(shape[axis2])]
-        individual_voxel_ids_meshed = torch.meshgrid(individual_voxel_ids, indexing='ij')
-        individual_voxel_ids_meshed_flat = [torch.flatten(x) for x in individual_voxel_ids_meshed]
-        slice_voxel_ids = torch.empty((shape[axis1] * shape[axis2], 3), dtype=torch.int64)
-        slice_voxel_ids[:, i] = center[i]
-        slice_voxel_ids[:, axis1] = individual_voxel_ids_meshed_flat[0]
-        slice_voxel_ids[:, axis2] = individual_voxel_ids_meshed_flat[1]
-        voxel_ids_per_slice.append(slice_voxel_ids)
-    voxel_ids = torch.cat(voxel_ids_per_slice, 0)
-    return voxel_ids
-'''
 
 def generate_mid_slice_ids(label: torch.Tensor) -> torch.Tensor:
     """Generate [N, 3] voxel IDs from three orthogonal, center slices."""
@@ -271,7 +215,7 @@ def generate_mid_slice_ids(label: torch.Tensor) -> torch.Tensor:
     fg_positions = fg_positions.reshape(-1, 3)
 
     # Debugging output for fg_positions
-    print("Foreground Positions:", fg_positions)
+    #print("Foreground Positions:", fg_positions)
 
     # Check if the label tensor contains any foreground voxels
     if torch.sum(label) == 0:
@@ -450,53 +394,7 @@ class OrthogonalSlices(data.Dataset):
             'offsets_hr': offset
         }
         return result_dict
-'''
 
-class OrthogonalSlices(data.Dataset):
-    def __init__(self, labels_dir: Path, casenames: List[str], verbose: bool):
-        self.casenames = casenames
-        self.labels, self.spacings = load_volumes(labels_dir, self.casenames)
-        # Offsets describe the position of the center of the first voxel. Again, this corresponds to
-        # align_corners=False:
-        self.offsets = [x / 2 for x in self.spacings]  # type: List[torch.Tensor]
-
-        # Compute max volume size
-        # Unlike with typical medical images, we define the bbox size with align_corners=False:
-        image_sizes = [torch.tensor(label.shape) * spacing
-                       for label, spacing in zip(self.labels, self.spacings)]
-        self.image_size: torch.Tensor = torch.stack(image_sizes).max(dim=0)[0]
-
-        if verbose:
-            print(f'Volume size: {self.image_size}.')
-
-    def __len__(self):
-        return len(self.casenames)
-
-    def __getitem__(self, item: int):
-        label = self.labels[item]
-
-        # Extract positions of orthogonal slices in [N, 1, 1, 3]
-        voxel_ids = generate_mid_slice_ids(label)
-        label_values = label[voxel_ids[:, 0], voxel_ids[:, 1], voxel_ids[:, 2]]
-        voxel_ids = voxel_ids.unsqueeze(1).unsqueeze(1)
-        label_values = label_values.unsqueeze(1).unsqueeze(1)
-
-        spacing = self.spacings[item]
-        offset = self.offsets[item]
-        coords = voxel_ids * spacing + offset
-
-        # Keys are plural because examples will be combined to batches
-        result_dict = {
-            'coords': coords,
-            'labels': label_values,
-            'casenames': self.casenames[item],
-            'caseids': item,
-            'labels_hr': label,
-            'spacings_hr': spacing,
-            'offsets_hr': offset
-        }
-        return result_dict
-''' 
 class ImplicitDataset(OrthogonalSlices):
     """For training encoder-free implicit functions. Generated coordinates take spacing into
     account.

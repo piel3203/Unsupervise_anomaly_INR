@@ -131,111 +131,11 @@ def sample_latents(latents: torch.Tensor, occ_net: implicits.AutoDecoder,
     labels_pred = labels_pred.reshape(batch_size_volumes, *target_spatial_shape)
     return labels_pred  # [B, *ST]
 
-'''
-def eval_batch(labels_pred: np.ndarray, labels_gt: np.ndarray, spacings: np.ndarray,
-               dices: List[float], asds: List[float], hd95s: List[float],
-               max_distances: List[float], err_vol_cm_3_list: List[float], err_vol_percent_list: List[float], verbose: bool):
-    """Evaluate a batch of volumetric masks."""
-    if labels_pred.shape != labels_gt.shape:
-        raise ValueError(f'Batch evaluation not possible: predicted shape {labels_pred.shape} '
-                         f'is different from GT shape {labels_gt.shape}.')
-    batch_size = labels_pred.shape[0]
-    # Iterate through batch examples
-    for j in range(batch_size):
-        label_pred = labels_pred[j, 0]
-        label_gt = labels_gt[j, 0]
 
-        # Empty GT/prediction mess up metrics calculations...
-        if label_gt.sum() == 0:
-            print('Warning: empty GT occured!')
-        if label_pred.sum() == 0:
-            print('Warning: empty prediciton occured!')
-
-        dice = metrics.compute_dice_coefficient(label_gt, label_pred)
-        spacing = spacings[j]
-        surf_distances = metrics.compute_surface_distances(label_gt, label_pred, spacing, True)
-        avg_distance_gt_to_pred, avg_distance_pred_to_gt = \
-            metrics.compute_average_surface_distance(surf_distances)
-        asd = (avg_distance_gt_to_pred + avg_distance_pred_to_gt) / 2
-        hausdorff = metrics.compute_robust_hausdorff(surf_distances, 100)
-        hausdorff95 = metrics.compute_robust_hausdorff(surf_distances, 95)
-        
-        """
-        print("shape of GT:", np.shape(label_gt))
-        print(type(label_gt))
-        print("shape of PRED:", np.shape(label_pred))
-        
-        
-        num_classes = 1
-
-        # Initialize the one-hot encoded array
-        one_hot_label = np.zeros((num_classes, *label_pred.shape), dtype=np.float16)
-        print(np.shape(one_hot_label))
-        one_hot_gt = np.zeros((num_classes, *label_gt.shape), dtype=np.float16)
-        print(np.shape(one_hot_gt))
-        
-                # Fill in the one-hot encoding
-        for class_id in range(num_classes):
-            one_hot_label[class_id] = (label_pred == class_id).astype(np.float16)
-            one_hot_gt[class_id] = (label_gt == class_id).astype(np.float16)
-
-
-        # Resulting one-hot array
-        print(one_hot_label.shape) 
-        print(one_hot_gt.shape)
-        
-        for i in range(1,len(one_hot_label)): 
-            err_vol_cm_3=abs(volume_GT_all[i-1]-volume_pred_all[i-1])
-            err_vol_percent=100*err_vol_cm_3/volume_GT_all[i-1]
-        """
-        volume_pred_all=volume_calc(label_pred,spacing)
-        volume_GT_all=volume_calc(label_gt,spacing)
-        
-        #print('VOL of PRED:', volume_pred_all)
-        #print(type(volume_pred_all))
-        #print('VOL of GT:', volume_GT_all)
-        
-        err_vol_cm_3=abs(volume_GT_all[0]-volume_pred_all[0])
-        err_vol_percent=100*err_vol_cm_3/volume_GT_all[0]
-
-        
-        # Calculate eccentricity
-        ecc_pred = calculate_eccentricity(label_pred)
-        ecc_gt = calculate_eccentricity(label_gt)
-
-        # Store metrics
-        dices.append(dice)
-        asds.append(asd)
-        hd95s.append(hausdorff95)
-        max_distances.append(hausdorff)
-        err_vol_cm_3_list.append(err_vol_cm_3)
-        err_vol_percent_list.append(err_vol_percent)
-        eccentricity_pred.append(np.mean(ecc_pred))  # Average eccentricity for the batch
-        eccentricity_gt.append(np.mean(ecc_gt))      # Average eccentricity for the batch
-        
-        
-        print(f"Volume error (cm³): {err_vol_cm_3}, Volume error (%): {err_vol_percent}")
-        print(f"Eccentricity (pred): {eccentricity_pred[-1]}, Eccentricity (GT): {eccentricity_gt[-1]}")
-
-
-        if verbose:
-            print(f'Batch ASD: {np.mean(asds[-batch_size:]):.2f}, '
-                  f'HSD: {np.mean(max_distances[-batch_size:]):.2f}, '
-                  f'HSD95: {np.mean(hd95s[-batch_size:]):.2f}, '
-                  f'DSC: {np.mean(dices[-batch_size:]):.2f}, '
-                  f'err_vol_cm_3: {np.mean(err_vol_cm_3_list[-batch_size:]):.2f}, '
-                  f'err_vol_percent: {np.mean(err_vol_percent_list[-batch_size:]):.2f}, '
-                  f'Eccentricity (pred): {np.mean(eccentricity_pred[-batch_size:]):.2f}, '
-                  f'Eccentricity (GT): {np.mean(eccentricity_gt[-batch_size:]):.2f}', flush=True)
-'''
 def eval_batch(labels_pred: np.ndarray, labels_gt: np.ndarray, spacings: np.ndarray,
                dices: List[float], asds: List[float], hd95s: List[float],
                max_distances: List[float], err_vol_cm_3_list: List[float], 
-               err_vol_percent_list: List[float], eccentricity_pred: List[float], 
-               eccentricity_gt: List[float], major_axis_pred: List[float],
-               major_axis_gt: List[float], minor_axis_pred: List[float], 
-               minor_axis_gt: List[float], curvature_pred: List[float],
-               curvature_gt: List[float], verbose: bool):
+               err_vol_percent_list: List[float], verbose: bool):
     """Evaluate a batch of volumetric masks."""
     if labels_pred.shape != labels_gt.shape:
         raise ValueError(f'Batch evaluation not possible: predicted shape {labels_pred.shape} '
@@ -254,7 +154,7 @@ def eval_batch(labels_pred: np.ndarray, labels_gt: np.ndarray, spacings: np.ndar
         # Compute metrics
         dice = metrics.compute_dice_coefficient(label_gt, label_pred)
         spacing = spacings[j]
-        surf_distances = metrics.compute_surface_distances(label_gt, label_pred, spacing, True)
+        surf_distances = metrics.compute_surface_distances(label_gt, label_pred, spacing)
         avg_distance_gt_to_pred, avg_distance_pred_to_gt = \
             metrics.compute_average_surface_distance(surf_distances)
         asd = (avg_distance_gt_to_pred + avg_distance_pred_to_gt) / 2
@@ -268,14 +168,6 @@ def eval_batch(labels_pred: np.ndarray, labels_gt: np.ndarray, spacings: np.ndar
         err_vol_cm_3 = abs(volume_GT_all[0] - volume_pred_all[0])
         err_vol_percent = 100 * err_vol_cm_3 / volume_GT_all[0]
 
-        # Calculate 3D shape properties for predictions and ground truth
-        ecc_pred, major_pred, minor_pred = calculate_3d_shape_properties(label_pred)
-        ecc_gt, major_gt, minor_gt = calculate_3d_shape_properties(label_gt)
-
-        # Calculate curvature for predictions and ground truth
-        curvature_value_pred = calculate_curvature(label_pred)
-        curvature_value_gt = calculate_curvature(label_gt)
-
         # Store metrics
         dices.append(dice)
         asds.append(asd)
@@ -283,27 +175,13 @@ def eval_batch(labels_pred: np.ndarray, labels_gt: np.ndarray, spacings: np.ndar
         max_distances.append(hausdorff)
         err_vol_cm_3_list.append(err_vol_cm_3)
         err_vol_percent_list.append(err_vol_percent)
-        eccentricity_pred.append(np.mean(ecc_pred))
-        eccentricity_gt.append(np.mean(ecc_gt))
-        major_axis_pred.append(np.mean(major_pred))
-        major_axis_gt.append(np.mean(major_gt))
-        minor_axis_pred.append(np.mean(minor_pred))
-        minor_axis_gt.append(np.mean(minor_gt))
-        curvature_pred.append(np.mean(curvature_value_pred))
-        curvature_gt.append(np.mean(curvature_value_gt))
 
         print(f"Volume error (cm³): {err_vol_cm_3}, Volume error (%): {err_vol_percent}")
-        print(f"Eccentricity (pred): {eccentricity_pred[-1]}, Eccentricity (GT): {eccentricity_gt[-1]}")
-        print(f"Curvature (pred): {curvature_pred[-1]}, Curvature (GT): {curvature_gt[-1]}")
 
     if verbose:
-        print(f'Batch ASD: {np.mean(asds[-batch_size:]):.4f}, '
-              f'HSD: {np.mean(max_distances[-batch_size:]):.4f}, '
-              f'HSD95: {np.mean(hd95s[-batch_size:]):.4f}, '
-              f'DSC: {np.mean(dices[-batch_size:]):.4f}, '
-              f'err_vol_cm_3: {np.mean(err_vol_cm_3_list[-batch_size:]):.4f}, '
-              f'err_vol_percent: {np.mean(err_vol_percent_list[-batch_size:]):.4f}, '
-              f'Eccentricity (pred): {np.mean(eccentricity_pred[-batch_size:]):.4f}, '
-              f'Eccentricity (GT): {np.mean(eccentricity_gt[-batch_size:]):.4f}, '
-              f'Curvature (pred): {np.mean(curvature_pred[-batch_size:]):.4f}, '
-              f'Curvature (GT): {np.mean(curvature_gt[-batch_size:]):.4f}', flush=True)
+        print(f'Batch ASD: {np.mean(asds[-batch_size:]):.2f}, '
+              f'HSD: {np.mean(max_distances[-batch_size:]):.2f}, '
+              f'HSD95: {np.mean(hd95s[-batch_size:]):.2f}, '
+              f'DSC: {np.mean(dices[-batch_size:]):.2f}, '
+              f'err_vol_cm_3: {np.mean(err_vol_cm_3_list[-batch_size:]):.2f}, '
+              f'err_vol_percent: {np.mean(err_vol_percent_list[-batch_size:]):.2f} ', flush=True)

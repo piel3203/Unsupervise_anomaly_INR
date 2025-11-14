@@ -1,0 +1,14 @@
+# Path to directory where all the models are
+model_basedir: './models/'
+
+# Path to base data directory
+data_basedir: '../data/'
+# Directory name with labels within base data directory
+labels_dirname: 'data_DIASEM/renamed_data/RF/labels_registered_turned/'
+
+# Path to directory with casename files
+casefiles_basedir: './casename_files/DIASEM/RF/'
+
+# Path to base output directory for reconstructions
+output_basedir: './output/'
+

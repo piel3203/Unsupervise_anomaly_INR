@@ -1,6 +1,0 @@
-sujet1_ROT10_x_RF_faible_3DUS
-sujet1_ROT10_z_RF_faible_3DUS
-sujet1_ROT15_x_RF_faible_3DUS
-sujet1_ROT15_z_RF_faible_3DUS
-sujet1_ROT5_x_RF_faible_3DUS
-sujet1_ROT5_z_RF_faible_3DUS
