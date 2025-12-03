@@ -18,21 +18,70 @@ Experiments on **103 segmented volumes** show that the method effectively discri
 
 ![Overview](images_readme/general_idea_method.png)
 ---
+## Table of Contents
 
+1. [Architecture](#architecture)  
+2. [Results](#results)  
+   - [Qualitative](#qualitative-results)  
+   - [Quantitative](#quantitative-results)  
+3. [Installation](#installation)  
+4. [Data](#data)  
+5. [Usage](#usage)  
+6. [References](#references)  
+
+---
+## Architecture
+
+The model uses a **conditional INR with an auto-decoding strategy** to encode muscle shapes into a latent space and reconstruct them. Anomalies are detected based on reconstruction errors.  
+
+![Architecture](images_readme/Unsupervised_anomaly_detection_method.png)  
+*Figure: Overview of the INR model for muscle shape modeling.*  
+
+---
+
+## Results
+
+### Qualitative Results
+
+Example segmentation reconstructions highlighting normal vs. sarcopenic muscles:  
+
+![Result 1](images_readme/qualitativ_results.png)  
+*Figure: Qualitative results. Muscles from older adults with (a) and without (b) sarcopenia vs. from young subjects (c and d). Superposition of the GT (in green) and the prediction (in red)*  
+> These overlays show how the model reconstructs muscle shapes. Larger reconstruction errors indicate sarcopenic muscles.  
+
+Example of visualization of 2 first LDA components applied to the latent space of each subjects. 
+![Result 2](images_readme/LDA.png) 
+*Figure: Visualization of the first two LDA components applied to the INR’s latent representation of train and test participants for each muscle. 
+Blue is for Y, dark green for OH and red for OS. A Fisher score and its corresponding p-value is calculated for each muscle.*
+
+### Quantitative Results
+Example of boxplots of Dice metric you can obtain for the 5 fold cross-validation for the 2 tests sets: Nomal shape (Y + OH) and Sarcopenic shape (OS) :
+![Result 3](images_readme/quantitativ_results.png)  
+*Figure: Box plot of Dice scores, from test predictions of healthy (Y+OH) and sarcopenic (OS) participants obtained with an INR model trained on healthy subjects, for the RF on different folds. The Dice score quantifies the volumetric overlap between the original segmented volume (manual ground truth) and the INR’s labelmap prediction. For each fold, healthy (Y+OH) adults were separated into train and test groups. OS were always in the test group. The p-value represents the overall effect of the OS group on Dice score, regardless of the fold.*
 
 ## Requirements & Installation  
 
 ### Prerequisites  
 
-- Python 3.x  
-- Common Python libraries for medical image processing: e.g. `numpy`, `scipy`, `nibabel`, `pandas`, `matplotlib`, possibly `torch` / `tensorflow` (depending on implementation)  
-- Optionally: a CUDA-enabled GPU — although the original study trained on a standard workstation, a GPU can accelerate training / inference. :contentReference[oaicite:9]{index=9}  
-
+- Python 3.10.10 or higher  
+- Common Python libraries for medical image processing: e.g. `numpy`, `scipy`, `nibabel`, `pandas`, `matplotlib`, possibly `torch` / `tensorflow` (depending on implementation)
+- all the required libraries are in requirement.txt
+- Optionally but recommanded: a CUDA-enabled GPU
+  
 ### Install  
 
 ```bash
-git clone https://github.com/<your‑username>/<project‑repo>.git  
-cd <project‑repo>  
+git clone https://github.com/piel3203/Unsupervise_anomaly_INR.git 
+cd <Unsupervise_anomaly_INR>  
 python -m venv venv  
 source venv/bin/activate    # or `venv\Scripts\activate` on Windows  
 pip install -r requirements.txt  
+```
+
+## Data 
+
+## Usage 
+
+## References
+
+
