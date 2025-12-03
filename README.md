@@ -270,6 +270,124 @@ CUDA_VISIBLE_DEVICES=0,1 python eval.py \
 Remove CUDA_VISIBLE_DEVICES=0,1 if you do not have a GPU
 Adjust GPU indices to match your hardware (e.g., CUDA_VISIBLE_DEVICES=0)
 
-## References
+## 5. Results Exploitation
+
+After running inference, all quantitative metrics and latent vectors are stored inside an automatically created output folder./output/<name_of_output_folder>/log.txt
 
 
+This `log.txt` file contains, for each test subject:
+
+- **Reconstruction metrics**  
+  - Dice (DSC)  
+  - Average Surface Distance (ASD)  
+  - Hausdorff Distance (HSD / HSD95)  
+  - Volumetric error (cm³ and %)  
+- **Latent representation**  
+  - The optimized latent vector corresponding to the subject
+
+These outputs allow you to perform different analyses to evaluate muscle anomalies and compare normal vs. sarcopenic shapes.
+
+---
+
+### 5.1. Boxplots of Quantitative Metrics
+
+Using the metrics extracted from the log files, you can generate boxplots for:
+
+- ASD  
+- DSC  
+- HSD / HSD95  
+- Volumetric error (cm³ and %)  
+
+To generate boxplots, you only need the inference folders corresponding to:
+
+./output/<name_inf_test>/
+./output/<name_inf_sarcopenia>/
+
+
+These contain the reconstructed labelmaps, metrics, and latent codes needed for the quantitative comparison.
+
+---
+
+### 5.2. Latent Space Analysis (LDA)
+
+To perform latent space visualization (e.g., with **Linear Discriminant Analysis**), you need **latent vectors from both training and test subjects**.
+
+This requires **running an additional inference** on the *training subjects* to extract their latent codes as well.  
+Thus, LDA requires three inference folders:
+
+./output/<name_inf_test>/ # Latent codes for test subjects (Y + OH)
+./output/<name_inf_sarcopenia>/ # Latent codes for sarcopenic subjects (OS)
+./output/<name_inf_healthy>/ # Latent codes for training subjects (Y + OH)
+
+
+⚠️ **Important:**  
+Make sure to adapt the paths inside the provided Jupyter notebooks to match the names of your inference folders.
+
+This step is essential for properly visualizing how:
+
+- Young subjects (Y)  
+- Older healthy subjects (OH)  
+- Older sarcopenic subjects (OS)  
+
+separate in the latent space learned during training.
+
+---
+
+### 5.3. Provided Notebooks for Analysis
+
+To generate the LDA plots and the boxplots, two example notebooks are provided:
+./output/results_from_log_lda_boxplot_clean.ipynb
+./output/results_from_log_lda_boxplots.ipynb
+
+
+These notebooks:
+
+- Parse the `log.txt` files
+- Load latent vectors and metrics
+- Produce LDA and boxplot figures and export them as pdf in ./output/plots_{muscle_name}/ and./output/figures_boxplots/ respectively
+- Require modifying the input folder paths depending on your inference outputs
+
+Adapt the paths inside the notebooks according to the names of your inference folders:
+
+- `<name_inf_test>`
+- `<name_inf_sarcopenia>`
+- `<name_inf_healthy>`
+
+
+## 📚 References
+
+This repository contains the code associated with the following article:
+
+**[1]**  
+L. Piecuch, J. Huet, A. Frouin, A. Nordez, A.-S. Boureau, and D. Mateus,  
+*“Unsupervised Anomaly Detection on Implicit Shape Representations for Sarcopenia Detection,”*  
+**2025 IEEE 22nd International Symposium on Biomedical Imaging (ISBI)**, Houston, USA, 2025, pp. 1–5.  
+doi: 10.1109/ISBI60581.2025.10980714
+
+**BibTeX:**
+```bibtex
+@inproceedings{piecuch2025sarcopenia,
+  author={Piecuch, L. and Huet, J. and Frouin, A. and Nordez, A. and Boureau, A.-S. and Mateus, D.},
+  title={Unsupervised Anomaly Detection on Implicit Shape Representations for Sarcopenia Detection},
+  booktitle={2025 IEEE 22nd International Symposium on Biomedical Imaging (ISBI)},
+  year={2025},
+  pages={1--5},
+  doi={10.1109/ISBI60581.2025.10980714}
+}
+```
+## External Resources
+This implementation builds upon the following open-source project:
+**[2]** 
+Amiranashvili, Tamaz and L{\"u}dke, David and Li, Hongwei and Menze, Bjoern and Zachow, Stefan,
+*Learning Shape Reconstruction from Sparse Measurements with Neural Implicit Functions*
+**2022 PMLR**
+doi: 
+@inproceedings{amiranashvili2022learning,
+  title={Learning Shape Reconstruction from Sparse Measurements with Neural Implicit Functions},
+  author={Amiranashvili, Tamaz and L{\"u}dke, David and Li, Hongwei and Menze, Bjoern and Zachow, Stefan},
+  booktitle={Proceedings of the Fifth Conference on Medical Imaging with Deep Learning},
+  year={2022},
+  publisher={PMLR}
+}
+Available at: 
+[Menzel Lab — Implicit Shape Reconstruction](https://github.com/menzelab/implicit-shape-reconstruction)
