@@ -1,0 +1,13 @@
+S13_JULCOL_GM_seg
+S14_BAPLEF_GM_seg
+S15_YOHBET_GM_seg
+S16_ANTMAU_GM_seg
+sujet10_GM_faible_seg
+sujet10_GM_fort_seg
+sujet10_GM_pad_seg
+sujet11_GM_faible_seg
+sujet11_GM_fort_seg
+sujet11_GM_pad_seg
+sujet12_GM_faible_seg
+sujet12_GM_fort_seg
+sujet12_GM_pad_seg

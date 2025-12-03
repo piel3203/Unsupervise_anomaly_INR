@@ -1,0 +1,14 @@
+S05_TOMWON_GM_seg
+S06_LUCDUG_GM_seg
+S07_LUCPRI_GM_seg
+S08_OSCCAR_GM_seg
+S22_THIREB_GM_seg
+sujet4_GM_faible_seg
+sujet4_GM_fort_seg
+sujet4_GM_pad_seg
+sujet5_GM_faible_seg
+sujet5_GM_fort_seg
+sujet5_GM_pad_seg
+sujet6_GM_faible_seg
+sujet6_GM_fort_seg
+sujet6_GM_pad_seg

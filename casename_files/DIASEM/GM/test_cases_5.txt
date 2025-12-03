@@ -1,0 +1,13 @@
+S17_THEBRO_GM_seg
+S18_THOONG_GM_seg
+S19_VALGOR_GM_seg
+S20_AXECOU_GM_seg
+sujet13_GM_faible_seg
+sujet13_GM_fort_seg
+sujet13_GM_pad_seg
+sujet14_GM_faible_seg
+sujet14_GM_fort_seg
+sujet14_GM_pad_seg
+sujet15_GM_faible_seg
+sujet15_GM_fort_seg
+sujet15_GM_pad_seg

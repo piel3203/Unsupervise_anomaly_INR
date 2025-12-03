@@ -1,13 +1,5 @@
-test_casefile: test_cases_1_small.txt  
-#sarcopenia_subj_DIASEM.txt
-#train_cases_1.txt
-#test_cases_1
-#selected_params: ['ID_subject','Sexe', 'Age', 'Volume_RF']
-selected_params: ['ID_subject']
-missing_value: False
-which_selec_param: 0
-opt_rot: False
-opt_vect: False
+test_casefile: test_cases_1.txt  
+
 evaluate_predictions: True
 export_predictions: True
 allow_overwriting: True

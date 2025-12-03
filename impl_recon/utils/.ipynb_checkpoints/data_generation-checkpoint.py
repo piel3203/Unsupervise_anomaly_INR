@@ -274,7 +274,7 @@ class ReconNetDataset(data.Dataset):
         # Store this for deterministic random sampling operations later
         num_cases_original = len(self.casenames)
         caseids = list(range(num_cases_original))
-        self.labels, self.spacings = load_volumes(labels_dir, self.casenames, spacing_scale=10.0)
+        self.labels, self.spacings = load_volumes(labels_dir, self.casenames, spacing_scale=1.0)
         self.offsets = [x / 2 for x in self.spacings]  # type: List[torch.Tensor]
 
         # Data sanity checks
@@ -350,7 +350,7 @@ class OrthogonalSlices(data.Dataset):
     def __init__(self, labels_dir: Path, casenames: List[str], verbose: bool):
         self.casenames = casenames
         #spacing_scale=2.0
-        self.labels, self.spacings = load_volumes(labels_dir, self.casenames,spacing_scale=10.0)
+        self.labels, self.spacings = load_volumes(labels_dir, self.casenames,spacing_scale=1.0)
         print("SPACINGS:",self.spacings)
         # Offsets describe the position of the center of the first voxel. Again, this corresponds to
         # align_corners=False:

@@ -1,8 +1,8 @@
 # Split in training/validation happens internally.
-train_casefile: train_cases_1_small.txt
+train_casefile: train_cases_1.txt
 
 # If None, nothing is written to filesystem during training (useful for debugging).
-model_name: "DIASEM_test_clean"
+model_name: "DIASEM_GM_set1"
 
 # 0 -- AutoDecoder (AD), 1 -- ReconNet (RN)
 task_type: 0
@@ -38,7 +38,7 @@ learning_rate_lat: 1.0e-3
 #new lr for the optim of the rotations
 learning_rate_rot: 1.0e-4
 
-num_epochs: 1500
+num_epochs: 2500
 # Log to tensorboard every x epochs (train and val)
 log_epoch_count: 2
 # Store model checkpoint every x epochs
