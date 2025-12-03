@@ -97,17 +97,19 @@ Example of 5-fold cross-validation applied on our datasets:
 ## Usage 
 ### 1. Prepare the Data
 
-After placing your data inside the `./data` directory, you must create **casename files** that specify which subjects belong to the training and testing sets.
+After placing your data inside the `./data` directory, you must create **casename files** that specify which subjects belong to the training and testing sets. For the testing set, we advice you to separate the sarcopenic subjects from the `Normal` (Y + OH) ones to ensures compatibility with the downstream analysis scripts provided in the repository./output. 
 
-For a single experiment, create two files:
+For a single experiment, create three files:
 
 - `train_cases_1.txt`
 - `test_cases_1.txt`
+- `sarcopenia_subj.txt`
 
 For **5-fold cross-validation**, extend this to:
 
 - `train_cases_1.txt` … `train_cases_5.txt`
 - `test_cases_1.txt` … `test_cases_5.txt`
+- - `sarcopenia_subj.txt`
 
 ⚠️ **Important:**  
 Make sure each subject appears **only in the train OR test file** within the same fold to avoid data leakage.
@@ -177,6 +179,93 @@ Once everything is configured, run the training script:
 
 ```bash
 CUDA_VISIBLE_DEVICES=0,1 python train.py -p ./paths_config_default.yml -c ./train_config_default.yml
+```
+Remove CUDA_VISIBLE_DEVICES=0,1 if you do not have a GPU
+Adjust GPU indices to match your hardware (e.g., CUDA_VISIBLE_DEVICES=0)
+
+## 4.Inference
+
+Once the model has been trained, you can run inference to generate **predictions** and extract the **latent vectors** for the test subjects.  
+Inference should be performed on:
+
+1. A **normal test set** (Y + OH) to verify that the method behaves correctly on healthy shapes  
+2. A **sarcopenic test set** (OS) to evaluate anomaly detection performance  
+
+**Recommendation:**  
+Run two separate inference passes using both:
+- `test_cases_1.txt`
+- `sarcopenia_subj.txt`
+
+This ensures compatibility with the downstream analysis scripts provided in the repository./output.
+
+Before launching inference, configure the file `eval_config_default.yml` as described below.
+
+---
+
+### 4.1. Inference Configuration
+
+Edit `eval_config_default.yml` with the following key fields:
+
+- **test_casefile**  
+  Path to the casename file listing the test subjects.
+
+- **evaluate_predictions: True**  
+  Enables computation of the quantitative metrics described in the paper:  
+  - Dice (DSC)  
+  - Hausdorff distance (HSD)  
+  - HSD95  
+  - Volumetric error (cm³ and %)  
+
+- **export_predictions: True**  
+  Saves qualitative results (labelmap reconstructions, overlays, etc.).
+
+- **allow_overwriting: False**  
+  Prevents accidental overwriting of previous predictions.  
+  Set to `True` only if you intend to replace existing results.
+
+---
+
+### 4.2. Slice-Based Evaluation Settings
+
+- **sample_orthogonal_slices: False**  
+  Do *not* use orthogonal slice sampling.  
+  For shape anomaly detection, we recommend using the full volume.
+
+- **slice_step_size: 1**  
+  Uses all slices of the segmentation volume.  
+  You may increase this value to reduce memory usage, but full sampling is strongly recommended.
+
+- **slice_step_axis: 2**  
+  Axis used for slice selection in LPS coordinates:  
+  - `0 = sagittal`  
+  - `1 = coronal`  
+  - `2 = axial`
+
+---
+
+### 4.3. Latent Optimization Parameters
+
+Other parameters in the config file define how the latent code is optimized:
+
+- Number of iterations  
+- Learning rate  
+- Optional **early stopping**  
+- `biggest_size`:  
+  - Should match the largest spatial size expected in your dataset  
+  - Must be adjusted if your image resolution differs from the default  
+  - ⚠️ Ensure the **spacing is identical or very close** to avoid biased reconstruction and incorrect volume comparisons
+
+---
+
+### 4.4. Run Inference
+
+Use the following command to launch inference:
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1 python eval.py \
+    -p ./paths_config_default.yml \
+    -c ./eval_config_default.yml \
+    -m ./models/DIASEM_test
 ```
 Remove CUDA_VISIBLE_DEVICES=0,1 if you do not have a GPU
 Adjust GPU indices to match your hardware (e.g., CUDA_VISIBLE_DEVICES=0)

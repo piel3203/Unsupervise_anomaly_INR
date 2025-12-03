@@ -18,7 +18,7 @@ slice_step_axis: 2
 #new lr for the optim of the rotations
 learning_rate_rot: 1.0e-3
 # For AD, number of iterations for latent optimization.
-latent_num_iters: 500
+latent_num_iters: 1500
 # For AD, if train dice doesn't change this number of 10-step blocks, stop latent optimization. -1 means never stop early.
 max_num_const_train_dsc: -1
 
