@@ -79,6 +79,16 @@ pip install -r requirements.txt
 ```
 
 ## Data 
+The code requires **3D segmented muscle volumes** (no images other than the segmented labelmaps needed) for each subject. The code can also work on sparsen slices, but to capture the full shape differences we decided to use all the slices provided for the train and inference. A tradeoff can be done to manage the memory if needed by reducing the number of slices given as input. The segmentation labelmaps should be binary. If this is not the case, Please use the code ./ ... to binarize your labelmap if needed. 
+
+- **Format**: 3D NIfTI files (.nii or .nii.gz) with integer labels for each muscle. Data can be directly converted from nrrd files with the small code provided in ... 
+
+- **Subjects**: "Normal" (Y + OH) or Sarcopenic (OS).
+
+- **Usage**: Place your volumes in the ./data folder. If you have multiple labelmaps for difference muscles, use this path architecture: ./data/muscle_name/labels . Filenames should be consistent with the subject IDs.
+
+**Note**: The original clinical dataset is not publicly available. Use your own segmentations or request access from the corresponding institution.
+
 
 ## Usage 
 
