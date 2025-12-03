@@ -35,9 +35,6 @@ learning_rate: 1.0e-4
 # For AD: not scaled with batch size; only used for training.
 learning_rate_lat: 1.0e-3
 
-#new lr for the optim of the rotations
-learning_rate_rot: 1.0e-4
-
 num_epochs: 2500
 # Log to tensorboard every x epochs (train and val)
 log_epoch_count: 2

@@ -89,8 +89,97 @@ The code requires **3D segmented muscle volumes** (no images other than the segm
 
 **Note**: The original clinical dataset is not publicly available. Use your own segmentations or request access from the corresponding institution.
 
+Example of 5-fold cross-validation applied on our datasets:
+
+![Cross_val](images_readme/cross_val_split.png)  
+*Figure: Dataset separation for the creation of the 5 folds for the cross-validation.*
 
 ## Usage 
+### 1. Prepare the Data
+
+After placing your data inside the `./data` directory, you must create **casename files** that specify which subjects belong to the training and testing sets.
+
+For a single experiment, create two files:
+
+- `train_cases_1.txt`
+- `test_cases_1.txt`
+
+For **5-fold cross-validation**, extend this to:
+
+- `train_cases_1.txt` … `train_cases_5.txt`
+- `test_cases_1.txt` … `test_cases_5.txt`
+
+⚠️ **Important:**  
+Make sure each subject appears **only in the train OR test file** within the same fold to avoid data leakage.
+
+An example of casename files is available in: ./casename_files/RF
+
+---
+
+### 2. Optional Pre-processing
+
+If needed, a preprocessing step can be applied to your data:
+
+- Re-centering the muscle volumes on their barycenter  
+- Optional flipping along a chosen axis  
+
+Example preprocessing scripts can be found in: ./data/preprocess/ 
+
+
+---
+
+### 3. Training
+
+Before training, configure the file paths and training parameters.
+
+#### 3.1 Path Configuration
+
+Edit `paths_config_default.yml` to specify:
+
+- **model_basedir**: directory where trained models are saved/loaded  
+- **data_basedir**: root folder containing your dataset (e.g., `./data`)  
+- **labels_dirname**: subdirectory containing the segmentation labels  
+  - Example:  
+    - `data_basedir: ./data`  
+    - `labels_dirname: ./RF`  
+    - → dataset path becomes `./data/RF`
+- **output_basedir**: directory for saving reconstructions and predictions  
+
+---
+
+#### 3.2 Training Configuration
+
+Edit `train_config_default.yml` with the following key parameters:
+
+- **train_casefile**: the training casename file you created  
+- **model_name**: name of the model to train  
+  - Change this to train a new model (safety checks prevent overwriting old ones)  
+- **task_type: 0**  
+  - Must stay at `0` (unsupervised anomaly detection with Autodecoder)
+- **val_fraction: 0.1**  
+  - Fraction of training data used for validation (recommended: 10%)
+- **slice_step_size: 1**  
+  - Uses all slices of each segmentation volume  
+- **slice_step_axis: 2**  
+  - Axis for slice thinning: 0 = sagittal, 1 = coronal, 2 = axial  
+- **num_points_per_example_per_dim_train: -1**  
+  - Uses the whole 3D volume (recommended)  
+  - Reduce only if GPU memory is limited
+
+Other parameters define the network structure, optimizer, and number of epochs.  
+An example configuration file is provided in the repository.
+
+---
+
+### 3.3 Launch Training
+
+Once everything is configured, run the training script:
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1 python train.py -p ./paths_config_default.yml -c ./train_config_default.yml
+```
+Remove CUDA_VISIBLE_DEVICES=0,1 if you do not have a GPU
+Adjust GPU indices to match your hardware (e.g., CUDA_VISIBLE_DEVICES=0)
 
 ## References
 
