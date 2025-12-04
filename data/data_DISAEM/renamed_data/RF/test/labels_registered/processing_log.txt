@@ -1,0 +1,15 @@
+🔄 Traitement de 0 fichiers NIfTI...
+
+🔄 Traitement de 6 fichiers NIfTI...
+
+[REFERENCE] Le fichier 'sujet9_RF_faible_3DUS.nii.gz' est utilisé comme référence avec centre de masse mm = [-9.63988596  7.77944114 16.90542329]
+[copié et recentré] TC152_RF.nii.gz sauvegardé dans ../../data/data_DIASEM/renamed_data/RF/test/labels_registered/TC152_RF.nii.gz
+[copié et recentré] TT129_RF.nii.gz sauvegardé dans ../../data/data_DIASEM/renamed_data/RF/test/labels_registered/TT129_RF.nii.gz
+[flipé et recentré] ZS153_RF.nii.gz sauvegardé dans ../../data/data_DIASEM/renamed_data/RF/test/labels_registered/ZS153_RF.nii.gz
+[copié et recentré] sujet9_RF_faible_3DUS.nii.gz sauvegardé dans ../../data/data_DIASEM/renamed_data/RF/test/labels_registered/sujet9_RF_faible_3DUS.nii.gz
+[copié et recentré] sujet9_RF_fort_3DUS.nii.gz sauvegardé dans ../../data/data_DIASEM/renamed_data/RF/test/labels_registered/sujet9_RF_fort_3DUS.nii.gz
+[copié et recentré] sujet9_RF_pad_3DUS.nii.gz sauvegardé dans ../../data/data_DIASEM/renamed_data/RF/test/labels_registered/sujet9_RF_pad_3DUS.nii.gz
+
+--- Traitement terminé ---
+Fichier de référence utilisé pour recentrage : sujet9_RF_faible_3DUS.nii.gz avec centre de masse (mm) = [-9.63988596  7.77944114 16.90542329]
+Nombre de fichiers flipés : 1

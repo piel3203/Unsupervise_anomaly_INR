@@ -125,7 +125,7 @@ If needed, a preprocessing step can be applied to your data:
 - Re-centering the muscle volumes on their barycenter  
 - Optional flipping along a chosen axis  
 
-Example preprocessing scripts can be found in: ./data/preprocess/ 
+Example preprocessing scripts can be found in: ./preprocessing/ 
 
 
 ---
@@ -335,17 +335,17 @@ separate in the latent space learned during training.
 
 ### 5.3. Provided Notebooks for Analysis
 
-To generate the LDA plots and the boxplots, two example notebooks are provided:
-./output/results_from_log_lda_boxplot_clean.ipynb
+To generate the LDA plots and the boxplots, an example of modular notebook is provided:
 ./output/results_from_log_lda_boxplots.ipynb
 
 
-These notebooks:
+
+This notebook:
 
 - Parse the `log.txt` files
 - Load latent vectors and metrics
-- Produce LDA and boxplot figures and export them as pdf in ./output/plots_{muscle_name}/ and./output/figures_boxplots/ respectively
-- Require modifying the input folder paths depending on your inference outputs
+- Produce LDA and boxplot figures and export them as pdf in ./output/plots_{muscle_name}/ and./output/figures_boxplots_{muscle_name}/ respectively
+- A full tutorial is given in the notebook to help adapt it to your own results
 
 Adapt the paths inside the notebooks according to the names of your inference folders:
 
@@ -382,7 +382,9 @@ You can access the full article with these links:
 ```
 ## External Resources
 This implementation builds upon the following open-source project:
+
 **[2]** 
+
 Tamaz Amiranashvili and David Lüdke and Hongwei Bran Li and Stefan Zachow and Bjoern H. Menze,
 *"Learning continuous shape priors from sparse data with neural implicit functions"*
 **2024 Medical Image Analysis**, 
