@@ -24,7 +24,7 @@ Experiments on **103 segmented volumes** show that the method effectively discri
 2. [Results](#results)  
    - [Qualitative](#qualitative-results)  
    - [Quantitative](#quantitative-results)  
-3. [Installation](#installation)  
+3. [Installation](#requirements--installation)  
 4. [Data](#data)  
 5. [Usage](#usage)  
 6. [References](#references)  
@@ -183,7 +183,7 @@ CUDA_VISIBLE_DEVICES=0,1 python train.py -p ./paths_config_default.yml -c ./trai
 Remove CUDA_VISIBLE_DEVICES=0,1 if you do not have a GPU
 Adjust GPU indices to match your hardware (e.g., CUDA_VISIBLE_DEVICES=0)
 
-## 4.Inference
+## 4. Inference
 
 Once the model has been trained, you can run inference to generate **predictions** and extract the **latent vectors** for the test subjects.  
 Inference should be performed on:
@@ -364,6 +364,11 @@ L. Piecuch, J. Huet, A. Frouin, A. Nordez, A.-S. Boureau, and D. Mateus,
 **2025 IEEE 22nd International Symposium on Biomedical Imaging (ISBI)**, Houston, USA, 2025, pp. 1–5.  
 doi: 10.1109/ISBI60581.2025.10980714
 
+You can access the full article with these links:
+- [IEEE](https://ieeexplore.ieee.org/abstract/document/10980714)
+- [HAL](https://hal.science/hal-04942033/)
+- [ArXiv](https://arxiv.org/abs/2502.09088)
+
 **BibTeX:**
 ```bibtex
 @inproceedings{piecuch2025sarcopenia,
@@ -378,16 +383,23 @@ doi: 10.1109/ISBI60581.2025.10980714
 ## External Resources
 This implementation builds upon the following open-source project:
 **[2]** 
-Amiranashvili, Tamaz and L{\"u}dke, David and Li, Hongwei and Menze, Bjoern and Zachow, Stefan,
-*Learning Shape Reconstruction from Sparse Measurements with Neural Implicit Functions*
-**2022 PMLR**
-doi: 
-@inproceedings{amiranashvili2022learning,
-  title={Learning Shape Reconstruction from Sparse Measurements with Neural Implicit Functions},
-  author={Amiranashvili, Tamaz and L{\"u}dke, David and Li, Hongwei and Menze, Bjoern and Zachow, Stefan},
-  booktitle={Proceedings of the Fifth Conference on Medical Imaging with Deep Learning},
-  year={2022},
-  publisher={PMLR}
-}
+Tamaz Amiranashvili and David Lüdke and Hongwei Bran Li and Stefan Zachow and Bjoern H. Menze,
+*"Learning continuous shape priors from sparse data with neural implicit functions"*
+**2024 Medical Image Analysis**, 
+**BibTeX:**
+```bibtex
+@article{AMIRANASHVILI2024103099,
+title = {Learning continuous shape priors from sparse data with neural implicit functions},
+journal = {Medical Image Analysis},
+volume = {94},
+pages = {103099},
+year = {2024},
+issn = {1361-8415},
+doi = {https://doi.org/10.1016/j.media.2024.103099},
+url = {https://www.sciencedirect.com/science/article/pii/S1361841524000240},
+author = {Tamaz Amiranashvili and David Lüdke and Hongwei Bran Li and Stefan Zachow and Bjoern H. Menze},
+keywords = {Shape modeling, Shape reconstruction, Osteoarthritis classification, Continuous shape representations, Representation learning},
+```
+
 Available at: 
 [Menzel Lab — Implicit Shape Reconstruction](https://github.com/menzelab/implicit-shape-reconstruction)
