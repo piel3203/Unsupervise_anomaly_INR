@@ -1,6 +1,0 @@
-S05_TOMWON_GM_seg
-S06_LUCDUG_GM_seg
-S07_LUCPRI_GM_seg
-sujet10_GM_faible_seg
-sujet10_GM_fort_seg
-sujet10_GM_pad_seg
