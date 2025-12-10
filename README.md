@@ -79,9 +79,9 @@ pip install -r requirements.txt
 ```
 
 ## Data 
-The code requires **3D segmented muscle volumes** (no images other than the segmented labelmaps needed) for each subject. The code can also work on sparsen slices, but to capture the full shape differences we decided to use all the slices provided for the train and inference. A tradeoff can be done to manage the memory if needed by reducing the number of slices given as input. The segmentation labelmaps should be binary. If this is not the case, Please use the code ./ ... to binarize your labelmap if needed. 
+The code requires **3D segmented muscle volumes** (no images other than the segmented labelmaps needed) for each subject. The code can also work on sparsen slices, but to capture the full shape differences we decided to use all the slices provided for the train and inference. A tradeoff can be done to manage the memory if needed by reducing the number of slices given as input. The segmentation labelmaps should be binary. If this is not the case, Please use the code ./preprocessing/Convert_nrrd_to_nifti.ipynb to binarize your labelmap if needed. 
 
-- **Format**: 3D NIfTI files (.nii or .nii.gz) with integer labels for each muscle. Data can be directly converted from nrrd files with the small code provided in ... 
+- **Format**: 3D NIfTI files (.nii or .nii.gz) with integer labels for each muscle. Data can be directly converted from nrrd files with the small code provided in ./preprocessing/Convert_nrrd_to_nifti.ipynb 
 
 - **Subjects**: "Normal" (Y + OH) or Sarcopenic (OS).
 
@@ -125,7 +125,7 @@ If needed, a preprocessing step can be applied to your data:
 - Re-centering the muscle volumes on their barycenter  
 - Optional flipping along a chosen axis  
 
-Example preprocessing scripts can be found in: ./preprocessing/ 
+Example preprocessing scripts can be found in: ./preprocessing/center_and_flip_data.ipynb 
 
 
 ---
