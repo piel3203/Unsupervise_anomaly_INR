@@ -4,17 +4,17 @@
 This repository contains the code associated with the work described in the article :
 L. Piecuch, J. Huet, A. Frouin, A. Nordez, A. -S. Boureau and D. Mateus, "Unsupervised Anomaly Detection on Implicit Shape Representations for Sarcopenia Detection," 2025 IEEE 22nd International Symposium on Biomedical Imaging (ISBI), Houston, TX, USA, 2025, pp. 1-5, doi: 10.1109/ISBI60581.2025.10980714
 
-**Sarcopenia** is a progressive age-related loss of muscle mass and strength that can significantly impacts patients daily life. Traditional assessment relies on 3D imaging and manual segmentations.  
+**Sarcopenia** is a muscle condition frequent with age that impacts quality of life and is characterized by strength impairment. Traditional assessment relies on whole muscle mass estimation or 3D imaging and segmentations for muscle volume.  
 
 This project analyzes **muscle shape** using an **implicit neural representation (INR)**. The method:  
 
 - Models normal muscle shapes  
 - Uses **unsupervised anomaly detection** to identify sarcopenic muscles from reconstruction errors  
-- Learns a **latent representation** that separates normal and abnormal muscles directly form the labels  
+- Learns a **latent representation** that separates normal and abnormal muscles directly from the associated labels  
 
-Experiments on **103 segmented volumes** show that the method effectively discriminates sarcopenic and non-sarcopenic muscles, providing both **quantitative metrics** and **qualitative visualizations**.  
+Experiments on **103 segmented volumes** show that muscle shape is sensitive to aging and sarcopenia. This method provides both **quantitative metrics** and **qualitative visualizations** of muscle shape impairments.
 
-> **Clinical relevance:** This tool allows researchers and clinicians to detect sarcopenia are other muscle impacted shapes, directly from manual segmentation (from any modality, here the segmentation were created from 3D Ultrasound images), facilitating large-scale studies.  
+> **Clinical relevance:** This tool allows researchers and clinicians to characterize muscle structure deformation, directly from manual segmentation (from any modality, here the segmentation were created from 3D Ultrasound images), facilitating large-scale studies.  
 
 ![Overview](images_readme/general_idea_method.png)
 ---
@@ -47,9 +47,9 @@ Example segmentation reconstructions highlighting normal vs. sarcopenic muscles:
 
 ![Result 1](images_readme/qualitativ_results.png)  
 *Figure: Qualitative results. Muscles from older adults with (a) and without (b) sarcopenia vs. from young subjects (c and d). Superposition of the GT (in green) and the prediction (in red)*  
-> These overlays show how the model reconstructs muscle shapes. Larger reconstruction errors indicate sarcopenic muscles.  
+> These overlays show how the model reconstructs muscle shapes. Larger reconstruction errors indicate abnormal shape.  
 
-Example of visualization of 2 first LDA components applied to the latent space of each subjects. 
+Example of visualization of the first 2 LDA components applied to the latent space of each subject. 
 ![Result 2](images_readme/LDA.png) 
 *Figure: Visualization of the first two LDA components applied to the INR’s latent representation of train and test participants for each muscle. 
 Blue is for Y, dark green for OH and red for OS. A Fisher score and its corresponding p-value is calculated for each muscle.*
